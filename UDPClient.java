@@ -19,10 +19,10 @@ public class UDPClient {
     System.out.print("Informar porta? [S/N]: ");
     String flag = input.next();
 
-    int portDestino;
+    int portDestino = 0;
     if (flag.equalsIgnoreCase("s")) {
+      System.out.print("Digite o número desejado para a porta: ");
       try {
-        System.out.print("Digite o número desejado para a porta: ");
         portDestino = input.nextInt();
       } catch (Exception e) {
         System.err.println("Erro ao inserir a porta: " + e.getMessage());
@@ -45,7 +45,7 @@ public class UDPClient {
       byte[] buffer = new byte[1024];
       DatagramPacket pctVeio = new DatagramPacket(buffer, buffer.length);
       socket.receive(pctVeio);
-      System.out.println("Resposta: " + new String(pctVeio.getData()));
+      System.out.println("Resposta: " + new String(pctVeio.getData()).trim());
       Thread.sleep(15000);
       socket.close();
     } catch (Exception e) { 
