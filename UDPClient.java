@@ -10,11 +10,11 @@ public class UDPClient {
     
     System.out.print("Digite a mensagem: ");
     String msg = input.nextLine();
-    if (msg == null) msg = "Ping!";
+    if (msg.isBlank() || msg.isEmpty()) msg = "Ping!";
     
     System.out.print("Digite o endereço de destino: ");
     String endDestino = input.nextLine();
-    if(endDestino == null) endDestino = "localhost";
+    if(endDestino.isBlank() || endDestino.isEmpty()) endDestino = "localhost";
     
     System.out.print("Informar porta? [S/N]: ");
     String flag = input.next();
@@ -38,7 +38,6 @@ public class UDPClient {
       byte[] message = msg.getBytes();
       InetAddress host = InetAddress.getByName(endDestino);
 
-      //TODO: Fazer if's com verificação de existência de mensagem, host e porta
       DatagramPacket pctVai = new DatagramPacket(message, message.length, host, portDestino);
       socket.send(pctVai);
 
