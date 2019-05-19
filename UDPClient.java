@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -5,16 +6,16 @@ import java.util.Scanner;
 
 public class UDPClient {
   public static void main(String[] args) {
-    DatagramSocket socket = null;
+    DatagramSocket socket;
     Scanner input = new Scanner(System.in);
     
     System.out.print("Digite a mensagem: ");
     String msg = input.nextLine();
-    if (msg.isBlank() || msg.isEmpty()) msg = "Ping!";
+    if (msg.isEmpty()) msg = "Ping!";
     
     System.out.print("Digite o endereço de destino: ");
     String endDestino = input.nextLine();
-    if(endDestino.isBlank() || endDestino.isEmpty()) endDestino = "localhost";
+    if(endDestino.isEmpty()) endDestino = "localhost";
     
     System.out.print("Informar porta? [S/N]: ");
     String flag = input.next();
@@ -34,20 +35,20 @@ public class UDPClient {
 
     try {
       socket = new DatagramSocket();
-      socket.setSoTimeout(3000);
       byte[] message = msg.getBytes();
       InetAddress host = InetAddress.getByName(endDestino);
-
+      
       DatagramPacket pctVai = new DatagramPacket(message, message.length, host, portDestino);
+      socket.setSoTimeout(30000); //Tempo de timeout caso não obtenha resposta
       socket.send(pctVai);
 
       byte[] buffer = new byte[1024];
       DatagramPacket pctVeio = new DatagramPacket(buffer, buffer.length);
       socket.receive(pctVeio);
+      Thread.sleep(10000); //Delay para que os clientes rodem simultaneamente
       System.out.println("Resposta: " + new String(pctVeio.getData()).trim());
-      Thread.sleep(15000);
       socket.close();
-    } catch (Exception e) { 
+    } catch (IOException | InterruptedException e) {
       System.err.println("Erro: " + e.getMessage()); 
     } 
   }  
