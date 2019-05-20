@@ -41,6 +41,7 @@ public class UDPClient {
       DatagramPacket pctVai = new DatagramPacket(message, message.length, host, portDestino);
       socket.setSoTimeout(30000); //Tempo de timeout caso não obtenha resposta
       socket.send(pctVai);
+      System.out.println("Requisição enviada ao servidor. Aguardando resposta!");
 
       byte[] buffer = new byte[1024];
       DatagramPacket pctVeio = new DatagramPacket(buffer, buffer.length);
