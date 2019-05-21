@@ -39,10 +39,10 @@ public class UDPServer {
                   count++;
                 }
               }
-              System.out.println("Conexões ativas: " + count);
+              System.out.println("Requisições sendo atendidas: " + count);
               Thread.sleep(2000);
             } catch (InterruptedException e) {
-              System.err.println("Erro ao inserir a porta: " + e.getMessage());
+              System.err.println("Erro: " + e.getMessage());
             }
           }
         }
