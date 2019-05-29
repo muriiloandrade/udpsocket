@@ -4,24 +4,19 @@ import java.util.InputMismatchException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class UDPServer {
   public static void main(String[] args) {
-    int porta;
+    String porta= "";
+    if(args.length>0) porta = args[0];
     DatagramSocket socket;
-    Scanner input = new Scanner(System.in);
-
-    System.out.print("Informar porta? [S/N]: ");
-    String flag = input.next();
 
     try {
-      if (flag.equalsIgnoreCase("s")) {
-        System.out.print("Digite um inteiro entre 1025 e 65535 para a porta: ");
-        porta = input.nextInt();
-        socket = new DatagramSocket(porta);
+      if (!porta.isEmpty()) {
+        socket = new DatagramSocket(Integer.parseInt(porta));
       } else {
-        socket = new DatagramSocket();
+        socket = new DatagramSocket(6789);
+        //Deixando sem parâmetro ele escolhe uma porta aleatória
       }
 
       System.out.printf("Servidor online e aguardando por cliente na porta %d!\n", socket.getLocalPort());
@@ -52,7 +47,7 @@ public class UDPServer {
         DatagramPacket pctVeio = new DatagramPacket(buffer, buffer.length);
         socket.receive(pctVeio);
         System.out.println("Requisição recebida do cliente: " + pctVeio.getAddress());
-        
+
         UDPServerThread thread = new UDPServerThread(pctVeio);
         threads.add(thread);
         thread.start();
